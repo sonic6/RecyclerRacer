@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - floor
+  - Cart1
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
