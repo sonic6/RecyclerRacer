@@ -6,10 +6,13 @@ public class PickUps : MonoBehaviour
 {
     GameObject[] carts;
     GameObject myCompatibleCart;
-    GameObject pivot;
+
+    //The amount the ray length will be multiplied by when casting it. This will help make a longer ray that goes through the pickup object
+    public static float rayMulti = 2;
 
     private void Start()
     {
+        gameObject.layer = 2; // layer nr 2 for Ignore raycast
         carts = GameObject.FindGameObjectsWithTag("cart");
         ExamineCarts();
     }
@@ -43,18 +46,10 @@ public class PickUps : MonoBehaviour
 
     private void IsPickUpBehindCart()
     {
-        
-        if(pivot == null)
-        {
-            pivot = new GameObject();
-            pivot.transform.position = gameObject.transform.position;
-            pivot.transform.parent = gameObject.transform;
-        }
-
-        Vector3 distance = pivot.transform.localPosition;
-        Ray ray = new Ray(new Vector3(distance.x - 100, distance.y, distance.z), new Vector3(distance.x + 100, distance.y, 0));
+        Vector3 distance = new Vector3(0,0,0);
+        Ray ray = new Ray(distance, rayMulti * (transform.position));
         RaycastHit hit;
-        Debug.DrawRay(new Vector3(distance.x - 100, distance.y, distance.z), new Vector3(distance.x + 100, distance.y, 0), Color.green);
+        Debug.DrawRay(distance, rayMulti*(transform.position));
         if(Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
             myCompatibleCart.GetComponent<AiCart>().currentDestination = myCompatibleCart.GetComponent<AiCart>().previousDestination;
     }
