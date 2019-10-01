@@ -5,7 +5,7 @@ public class CartController : MonoBehaviour
     Rigidbody myRig; //Component on racing carts
 
     [Tooltip("racing cart's speed")]
-    [SerializeField] float speed;
+    public float speed;
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
 
