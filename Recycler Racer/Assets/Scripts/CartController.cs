@@ -41,6 +41,7 @@ public class CartController : MonoBehaviour
     {
         bool isDriving = false;
         var cartVelocity = gameObject.GetComponent<Rigidbody>().velocity;
+        
 
         //if the cart is on the ground then it's allowed to drive forward or backwards
         if (onGround)
