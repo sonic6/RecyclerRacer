@@ -74,6 +74,5 @@ public class AiCart : MonoBehaviour
             if (trackPosNr + 1 < trackPositions.Length)
                 trackPosNr++;
         }
-        print(Mathf.Abs(me.x - they.x) + " on x " + Mathf.Abs(me.z - they.z) + " on z");
     }
 }
