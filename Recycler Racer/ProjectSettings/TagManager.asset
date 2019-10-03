@@ -7,6 +7,9 @@ TagManager:
   - floor
   - cart
   - plastic
+  - paper
+  - glass
+  - compost
   layers:
   - Default
   - TransparentFX
@@ -17,8 +20,8 @@ TagManager:
   - 
   - 
   - Player
-  - 
-  - 
+  - RaceTarget
+  - PickUps
   - 
   - 
   - 

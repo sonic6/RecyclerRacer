@@ -5,7 +5,7 @@ public class CartController : MonoBehaviour
     Rigidbody myRig; //Component on racing carts
 
     [Tooltip("racing cart's speed")]
-    [SerializeField] float speed;
+    public float speed;
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
 
@@ -41,6 +41,7 @@ public class CartController : MonoBehaviour
     {
         bool isDriving = false;
         var cartVelocity = gameObject.GetComponent<Rigidbody>().velocity;
+        
 
         //if the cart is on the ground then it's allowed to drive forward or backwards
         if (onGround)
