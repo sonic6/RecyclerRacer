@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class AiCart : MonoBehaviour
 {
+    public float obstacleDetection = 20;
+    public float obstacleDetectSides = 3;
+
     private TrackTargets targets;
     private Transform[] trackPositions;
     private int trackPosNr = 0;
@@ -32,9 +35,11 @@ public class AiCart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ObstacleDetection();
         //myCart.SetDestination(currentDestination.position);
-        Movement();
+        //Movement();
         NextPosition();
+        
     }
 
     public void SetDestination(Transform destination)
@@ -45,10 +50,7 @@ public class AiCart : MonoBehaviour
 
     void Movement()
     {
-        foreach(WheelCollider wheel in wheels)
-        {
-            wheel.motorTorque = speed;
-        }
+        ApplyWheelSpeed(speed);
 
         //Vector3 direction = currentDestination.position - transform.position;
         //Quaternion rotation = Quaternion.LookRotation(direction);
@@ -58,6 +60,7 @@ public class AiCart : MonoBehaviour
         float newSteer = (relativeVector.x / relativeVector.magnitude) * 75f;
         wheel1.steerAngle = newSteer;
         wheel2.steerAngle = newSteer;
+
     }
 
     private void NextPosition()
@@ -74,5 +77,54 @@ public class AiCart : MonoBehaviour
             if (trackPosNr + 1 < trackPositions.Length)
                 trackPosNr++;
         }
+    }
+
+    void ApplyWheelSpeed(float wheelSpeed)
+    {
+        foreach (WheelCollider wheel in wheels)
+        {
+            wheel.motorTorque = wheelSpeed;
+        }
+    }
+
+    private void ObstacleDetection()
+    {
+        Ray ray = new Ray(gameObject.transform.localPosition, transform.forward * obstacleDetection);
+        RaycastHit hit;
+        Debug.DrawRay(gameObject.transform.localPosition, transform.forward * obstacleDetection, Color.green);
+
+        Ray ray1 = new Ray(gameObject.transform.localPosition, new Vector3(0,0,obstacleDetectSides) + transform.forward * obstacleDetection);
+        RaycastHit hit1;
+        Debug.DrawRay(gameObject.transform.localPosition, new Vector3(0, 0, obstacleDetectSides) + transform.forward * obstacleDetection, Color.green);
+
+        Ray ray2 = new Ray(gameObject.transform.localPosition, new Vector3(0, 0, -obstacleDetectSides) + transform.forward * obstacleDetection);
+        RaycastHit hit2;
+        Debug.DrawRay(gameObject.transform.localPosition, new Vector3(0, 0, -obstacleDetectSides) + transform.forward * obstacleDetection, Color.green);
+        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag != "floor")
+        {
+            ApplyWheelSpeed(-speed);
+
+            if (Physics.Raycast(ray1, out hit1) && hit1.collider.gameObject.tag != "floor")
+            {
+                Vector3 relativeVector = transform.InverseTransformPoint(hit1.transform.position);
+                float newSteer = (relativeVector.x / relativeVector.magnitude) * -75f;
+                wheel1.steerAngle = newSteer;
+                wheel2.steerAngle = newSteer;
+                //ApplyWheelSpeed(speed / 2);
+            }
+
+            else if (Physics.Raycast(ray2, out hit2) && hit2.collider.gameObject.tag != "floor")
+            {
+                Vector3 relativeVector = transform.InverseTransformPoint(hit2.transform.position);
+                float newSteer = (relativeVector.x / relativeVector.magnitude) * 75f;
+                wheel1.steerAngle = newSteer;
+                wheel2.steerAngle = newSteer;
+                //ApplyWheelSpeed(speed / 2);
+            }
+        }
+        else Movement();
+
+        
+
     }
 }
