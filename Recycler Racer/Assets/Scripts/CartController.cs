@@ -10,6 +10,8 @@ public class CartController : MonoBehaviour
     public float speed;
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
+
+    public GameObject camPivot;
     
     //Front wheels
     private WheelCollider wheel1;
@@ -33,8 +35,10 @@ public class CartController : MonoBehaviour
 
     void PositionCamera()
     {
-        Camera.main.transform.parent.position = gameObject.transform.position/* + camPos*/;
-        Camera.main.transform.parent.localRotation = new Quaternion(0, gameObject.transform.localRotation.y, 0, 0);
+        camPivot.transform.position = gameObject.transform.position/* + camPos*/;
+        if (Camera.main.transform.parent == null)
+            Camera.main.transform.parent = camPivot.transform;
+        camPivot.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y,0);
         //Camera.main.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 0);
     }
 
