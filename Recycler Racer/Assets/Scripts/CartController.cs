@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 
 public class CartController : MonoBehaviour
 {
@@ -48,13 +50,28 @@ public class CartController : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "floor")
         {
-            
+            if (transform.position.y - hit.point.y < 5)
+            {
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            }
+
+            else
+            {
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX;
+                GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationZ;
+            }
         }
-        else
-        {
-            transform.eulerAngles = new Vector3(0,transform.rotation.y,0);
-        }
+        
     }
+
+    IEnumerator StabalizeCart() //Might want to rase this. not being used
+    {
+        yield return new WaitForSeconds(5);
+        transform.eulerAngles = new Vector3(0, transform.rotation.y, 0);
+        GetComponent<Rigidbody>().AddForce(transform.up * 10);
+    }
+
+    
 
     private void StartDriving()
     {
