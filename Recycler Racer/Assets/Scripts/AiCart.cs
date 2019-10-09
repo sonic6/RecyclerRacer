@@ -30,8 +30,6 @@ public class AiCart : MonoBehaviour
         wheel2 = transform.Find("wheelF2").GetComponent<WheelCollider>();
         trackPositions = targets.GetComponentsInChildren<Transform>();
         currentDestination = trackPositions[1]; //trackPositions[0] is the parent holding the track objects. don't use it. 
-
-        print(trackPositions[1].name);
     }
 
     // Update is called once per frame
@@ -39,8 +37,6 @@ public class AiCart : MonoBehaviour
     {
         ObstacleDetection();
         IsCartOnGround();
-        //myCart.SetDestination(currentDestination.position);
-        //Movement();
         NextPosition();
         
     }
@@ -54,11 +50,7 @@ public class AiCart : MonoBehaviour
     void Movement()
     {
         ApplyWheelSpeed(speed);
-
-        //Vector3 direction = currentDestination.position - transform.position;
-        //Quaternion rotation = Quaternion.LookRotation(direction);
-        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, 0.5f * Time.deltaTime);
-
+        
         Vector3 relativeVector = transform.InverseTransformPoint(currentDestination.position);
         float newSteer = (relativeVector.x / relativeVector.magnitude) * 75f;
         wheel1.steerAngle = newSteer;
@@ -97,7 +89,7 @@ public class AiCart : MonoBehaviour
                 trackPosNr = 1;
             currentDestination = trackPositions[trackPosNr];
 
-            print(trackPositions[trackPosNr].name);
+            //print(trackPositions[trackPosNr].name);
             
 
         }
