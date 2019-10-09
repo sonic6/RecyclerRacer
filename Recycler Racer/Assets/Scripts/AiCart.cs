@@ -1,5 +1,4 @@
-﻿using UnityEngine.AI;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class AiCart : MonoBehaviour
@@ -24,6 +23,13 @@ public class AiCart : MonoBehaviour
 
     private void Start()
     {
+        GameObject detector = Instantiate(new GameObject());
+        detector.transform.position = transform.position;
+        detector.transform.rotation = transform.rotation;
+        detector.transform.parent = transform;
+        detector.name = "Detector";
+        detector.AddComponent<Detector>();
+
         targets = FindObjectOfType<TrackTargets>();
         wheels = GetComponentsInChildren<WheelCollider>();
         wheel1 = transform.Find("wheelF1").GetComponent<WheelCollider>();
@@ -31,6 +37,10 @@ public class AiCart : MonoBehaviour
         trackPositions = targets.GetComponentsInChildren<Transform>();
         currentDestination = trackPositions[1]; //trackPositions[0] is the parent holding the track objects. don't use it. 
     }
+
+    
+
+    
 
     // Update is called once per frame
     void Update()
@@ -82,17 +92,30 @@ public class AiCart : MonoBehaviour
     {
         Vector3 me = gameObject.transform.position;
         Vector3 they = currentDestination.transform.position;
-        if (Mathf.Abs(me.x - they.x) < 10f && Mathf.Abs(me.z - they.z) < 10f)
+        if (Mathf.Abs(me.x - they.x) < 10f && Mathf.Abs(me.z - they.z) < 10f && currentDestination.name.Contains("pickup") == false)
         {
             trackPosNr++;
             if (trackPosNr > trackPositions.Length)
                 trackPosNr = 1;
             currentDestination = trackPositions[trackPosNr];
-
-            //print(trackPositions[trackPosNr].name);
-            
-
         }
+
+        if(currentDestination.name.Contains("pickup"))
+        {
+            they = previousDestination.transform.position;
+            if(Mathf.Abs(me.x - they.x) < 10f && Mathf.Abs(me.z - they.z) < 10f)
+            {
+                trackPosNr++;
+                if (trackPosNr > trackPositions.Length)
+                    trackPosNr = 1;
+                previousDestination = trackPositions[trackPosNr];
+            }
+        }
+    }
+
+    public void PrevDestinationOnPickUp()
+    {
+        currentDestination = previousDestination;
     }
 
     void ApplyWheelSpeed(float wheelSpeed)
@@ -160,5 +183,35 @@ public class AiCart : MonoBehaviour
 
         
 
+    }
+
+}
+
+public class Detector : MonoBehaviour
+{
+    private void Start()
+    {
+        SetUpPickupDetector();
+    }
+
+    void SetUpPickupDetector()
+    {
+        BoxCollider bx = gameObject.AddComponent<BoxCollider>();
+        bx.isTrigger = true;
+        bx.center = new Vector3(0,0,60);
+        bx.size = new Vector3(80, 20, 5);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (transform.parent.name.Contains(other.tag))
+        {
+            if(other.gameObject.name != transform.parent.GetComponent<AiCart>().currentDestination.name)
+            {
+                transform.parent.GetComponent<AiCart>().previousDestination = transform.parent.GetComponent<AiCart>().currentDestination;
+                transform.parent.GetComponent<AiCart>().currentDestination = other.transform;
+            }
+            
+        }
     }
 }
