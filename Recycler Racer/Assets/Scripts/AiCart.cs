@@ -20,6 +20,7 @@ public class AiCart : MonoBehaviour
     private WheelCollider wheel2;
 
     public float speed = 60;
+    public float minSpeed = 10;
 
     private void Start()
     {

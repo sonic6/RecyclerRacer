@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
 public class PickUps : MonoBehaviour
 {
@@ -36,30 +35,44 @@ public class PickUps : MonoBehaviour
     {
         if (other.tag.Contains("cart"))
         {
-            myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
+            if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
+                myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
+            
+
+            if (other.gameObject == myCompatibleCart) //If the correct cart takes the pickup increase the cart's speed by playerBoost or aiBoost accordingly
+            {
+                if (other.GetComponent<AiCart>())
+                    other.GetComponent<AiCart>().speed += aiBoost;
+                else if (other.GetComponent<CartController>())
+                    other.GetComponent<CartController>().speed += playerBoost;
+            }
+            else if (other.gameObject != myCompatibleCart) //If the wrong cart takes the pickup decrease the cart's speed by playerBoost or aiBoost accordingly
+            {
+                if (other.GetComponent<AiCart>() && other.GetComponent<AiCart>().speed > other.GetComponent<AiCart>().minSpeed)
+                    other.GetComponent<AiCart>().speed -= aiBoost;
+                else if (other.GetComponent<CartController>() && other.GetComponent<CartController>().speed > other.GetComponent<CartController>().minSpeed)
+                    other.GetComponent<CartController>().speed -= playerBoost;
+            }
+            else
+                return;
+
             Destroy(gameObject);
         }
-        if (other.gameObject == myCompatibleCart)
-        {
-            if (other.GetComponent<AiCart>())
-                other.GetComponent<AiCart>().speed += aiBoost;
-            else if (other.GetComponent<CartController>())
-                other.GetComponent<CartController>().speed += playerBoost;
-        }
+        
     }
 
-    private void IsPickUpBehindCart() //casts a ray from the center point of world coordinates to this pickup item and through it. If cart hits the ray while driving, then it moves on and doesn't try to take the pickup
-    {
-        Vector3 distance = new Vector3(0,0,0);
-        Ray ray = new Ray(distance, rayMulti * (transform.position));
-        RaycastHit hit;
-        Debug.DrawRay(distance, rayMulti * (transform.position));
-        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
-            myCompatibleCart.GetComponent<AiCart>().currentDestination = myCompatibleCart.GetComponent<AiCart>().previousDestination;
-    }
+    //private void IsPickUpBehindCart() //casts a ray from the center point of world coordinates to this pickup item and through it. If cart hits the ray while driving, then it moves on and doesn't try to take the pickup
+    //{
+    //    Vector3 distance = new Vector3(0,0,0);
+    //    Ray ray = new Ray(distance, rayMulti * (transform.position));
+    //    RaycastHit hit;
+    //    Debug.DrawRay(distance, rayMulti * (transform.position));
+    //    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
+    //        myCompatibleCart.GetComponent<AiCart>().currentDestination = myCompatibleCart.GetComponent<AiCart>().previousDestination;
+    //}
 
-    private void Update()
-    {
-        IsPickUpBehindCart();
-    }
+    //private void Update()
+    //{
+    //    IsPickUpBehindCart();
+    //}
 }

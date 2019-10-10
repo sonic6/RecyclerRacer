@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
 
 public class CartController : MonoBehaviour
@@ -10,6 +9,8 @@ public class CartController : MonoBehaviour
     [SerializeField] Vector3 camPos;
     [Tooltip("racing cart's speed")]
     public float speed;
+    [Tooltip("racing cart's minimum speed")]
+    public float minSpeed;
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
 
@@ -133,5 +134,12 @@ public class CartController : MonoBehaviour
                 wheel2.steerAngle = newSteer;
             }
         }
+    }
+
+    public IEnumerator DrainSpeed()
+    {
+        yield return new WaitForSeconds(10f);
+        if(speed > minSpeed)
+            speed = speed - 10;
     }
 }
