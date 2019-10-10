@@ -9,15 +9,11 @@ public class CartController : MonoBehaviour
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
 
-    [SerializeField]
-    private bool checkpoint;
-
     bool onGround;
 
     void Start()
     {
         myRig = GetComponent<Rigidbody>();
-        checkpoint = false;
     }
     
     void Update()
@@ -78,18 +74,5 @@ public class CartController : MonoBehaviour
         }
         
     }
-    //So that you cant complete laps by just passing the finish line in succession
-    private void OnTriggerEnter(Collider other)
-    {
-        //Invisible checkpoint
-        if (other.CompareTag("Checkpoint"))
-        {
-            checkpoint = true;
-        }
-        //Completed lap
-        if (other.CompareTag("Finishline"))
-        {
-            checkpoint = false;
-        }
-    }
+
 }

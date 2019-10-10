@@ -1,22 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Mållinje : MonoBehaviour
+public class FinishLine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject LapCounter;
+    public int LapsDone;
+
+    public GameObject checkpoint;
+    public GameObject finishedLap;
+
+    private void Start()
     {
-        
+        finishedLap.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     private void OnTriggerEnter(Collider other)
     {
-        
+
+        //Counting laps
+        if (other.CompareTag("Cart1"))
+        {
+            LapsDone += 1;
+            LapCounter.GetComponent<Text>().text = "" + LapsDone;
+
+        }
+        finishedLap.SetActive(false);
+        checkpoint.SetActive(true);
     }
 }
