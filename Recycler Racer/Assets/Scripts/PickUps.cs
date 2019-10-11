@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class PickUps : MonoBehaviour
 {
@@ -6,12 +7,16 @@ public class PickUps : MonoBehaviour
     GameObject myCompatibleCart;
     float aiBoost = 10; //speed boost to be given to ai cart
     float playerBoost = 10; //speed boost to be given to player cart
-
-    //The amount the ray length will be multiplied by when casting it. This will help make a longer ray that goes through the pickup object
+    
+    [Tooltip("The amount the ray length will be multiplied by when casting it. This will help make a longer ray that goes through the pickup object")]
     public static float rayMulti = 2;
+
+    [Tooltip("How long in seconds this pickUp will stay on the game field before dissapearing")]
+    [SerializeField] float lifeSpan = 15;
 
     private void Start()
     {
+        StartCoroutine(DestroyAfterTime());
         gameObject.layer = 2; // layer nr 2 for Ignore raycast
         carts = GameObject.FindGameObjectsWithTag("cart");
         ExamineCarts();
@@ -61,18 +66,30 @@ public class PickUps : MonoBehaviour
         
     }
 
-    //private void IsPickUpBehindCart() //casts a ray from the center point of world coordinates to this pickup item and through it. If cart hits the ray while driving, then it moves on and doesn't try to take the pickup
-    //{
-    //    Vector3 distance = new Vector3(0,0,0);
-    //    Ray ray = new Ray(distance, rayMulti * (transform.position));
-    //    RaycastHit hit;
-    //    Debug.DrawRay(distance, rayMulti * (transform.position));
-    //    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
-    //        myCompatibleCart.GetComponent<AiCart>().currentDestination = myCompatibleCart.GetComponent<AiCart>().previousDestination;
-    //}
+    private void IsPickUpBehindCart() //casts a ray from the center point of world coordinates to this pickup item and through it. If cart hits the ray while driving, then it moves on and doesn't try to take the pickup
+    {
+        Vector3 distance = new Vector3(0, 0, 0);
+        Ray ray = new Ray(distance, rayMulti * (transform.position));
+        RaycastHit hit;
+        Debug.DrawRay(distance, rayMulti * (transform.position));
+        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
+        {
+            if (myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().currentDestination == gameObject && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
+                myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
+        }
+            
+    }
 
-    //private void Update()
-    //{
-    //    IsPickUpBehindCart();
-    //}
+    private void Update()
+    {
+        IsPickUpBehindCart();
+    }
+
+    IEnumerator DestroyAfterTime()
+    {
+        yield return new WaitForSeconds(lifeSpan);
+        if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
+            myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
+        Destroy(gameObject);
+    }
 }
