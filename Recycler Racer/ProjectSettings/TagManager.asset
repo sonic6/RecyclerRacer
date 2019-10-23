@@ -8,6 +8,7 @@ TagManager:
   - Cart1
   - Checkpoint
   - FinishLine
+  - Needle
   layers:
   - Default
   - TransparentFX

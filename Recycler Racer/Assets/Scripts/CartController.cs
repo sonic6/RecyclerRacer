@@ -9,11 +9,14 @@ public class CartController : MonoBehaviour
     [Tooltip("racing cart's steering left and right speed")]
     [SerializeField] float steer;
 
+
+
     bool onGround;
 
     void Start()
     {
         myRig = GetComponent<Rigidbody>();
+
     }
     
     void Update()
@@ -48,13 +51,15 @@ public class CartController : MonoBehaviour
             if (Input.GetAxis("Vertical") > 0)
             {
                 myRig.AddRelativeForce(new Vector3(0, 0, speed) * Time.deltaTime, ForceMode.Impulse);
+
                 
             }
 
             else if (Input.GetAxis("Vertical") < 0)
             {
                 myRig.AddRelativeForce(new Vector3(0, 0, -speed) * Time.deltaTime, ForceMode.Impulse);
-                
+
+
             }
         }
 
