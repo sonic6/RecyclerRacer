@@ -44,6 +44,7 @@ public class CartController : MonoBehaviour
         PositionCamera();
         IsCartOnGround();
         StartDriving();
+        FlipCart();
     }
 
     void PositionCamera()
@@ -56,7 +57,7 @@ public class CartController : MonoBehaviour
 
     void IsCartOnGround()
     {
-        Ray ray = new Ray(transform.position, -transform.up * distanceFromGround);
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y, transform.position.z + 1) , -transform.up * distanceFromGround);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "floor")
         {
@@ -74,14 +75,27 @@ public class CartController : MonoBehaviour
         
     }
 
-    IEnumerator StabalizeCart() //Might want to rase this. not being used
+    
+
+    private void FlipCart()
     {
-        yield return new WaitForSeconds(5);
-        transform.eulerAngles = new Vector3(0, transform.rotation.y, 0);
-        GetComponent<Rigidbody>().AddForce(transform.up * 10);
+        if (Input.GetKey(KeyCode.F))
+        {
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        }
+
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+        {
+            StartCoroutine(CheckRotation());
+        }
     }
 
-    
+    IEnumerator CheckRotation()
+    {
+        yield return new WaitForSeconds(5);
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+    }
 
     private void StartDriving()
     {

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 
 public class AiCart : MonoBehaviour
 {
@@ -46,9 +46,11 @@ public class AiCart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FlipCart();
         ObstacleDetection();
         IsCartOnGround();
         NextPosition();
+        
         //ForgetPickUpIfFar(currentDestination);
     }
 
@@ -87,6 +89,21 @@ public class AiCart : MonoBehaviour
             }
         }
 
+    }
+
+    void FlipCart()
+    {
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+        {
+            StartCoroutine(CheckRotation());
+        }
+    }
+
+    IEnumerator CheckRotation()
+    {
+        yield return new WaitForSeconds(5);
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
     private void NextPosition()
