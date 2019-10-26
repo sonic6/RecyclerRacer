@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.7346213, g: 0.5327179, b: 0.5634058, a: 1}
+  m_IndirectSpecularColor: {r: 0.7347474, g: 0.53261024, b: 0.56338626, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,8 +173,8 @@ MonoBehaviour:
   obstacleDetectSides: 3
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 2062911608}
-  speed: 10
-  minSpeed: 10
+  speed: 3
+  minSpeed: 3
 --- !u!65 &3683744
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -270,7 +270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &57743323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1618,7 +1618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &650908214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2494,7 +2494,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0.57223123, z: -0, w: 0.8200923}
-  m_LocalPosition: {x: 14, y: 3.217075, z: 105.20001}
+  m_LocalPosition: {x: 46.9, y: 3.217075, z: -139.49998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2807,7 +2807,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043788142}
   m_LocalRotation: {x: -0, y: -0.57223123, z: -0, w: 0.8200923}
-  m_LocalPosition: {x: 14, y: 3.217075, z: 105.20001}
+  m_LocalPosition: {x: 46.9, y: 3.217075, z: -139.49998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3076,8 +3076,8 @@ MonoBehaviour:
   obstacleDetectSides: 3
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 2062911608}
-  speed: 10
-  minSpeed: 10
+  speed: 3
+  minSpeed: 3
 --- !u!65 &1245375182
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3188,12 +3188,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d23d47cc733ec498ffb4a7ab2a9f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleDetection: 30
+  obstacleDetection: 5
   obstacleDetectSides: 3
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 1340817331}
-  speed: 10
-  minSpeed: 10
+  speed: 3
+  minSpeed: 3
 --- !u!65 &1250025934
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4836,7 +4836,7 @@ PrefabInstance:
     - target: {fileID: 1341030792403012310, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.5
+      value: 41.4
       objectReference: {fileID: 0}
     - target: {fileID: 1341030792403012310, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
@@ -4846,7 +4846,7 @@ PrefabInstance:
     - target: {fileID: 1341030792403012310, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 107.3
+      value: -137.4
       objectReference: {fileID: 0}
     - target: {fileID: 1341030792403012310, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
@@ -4896,12 +4896,12 @@ PrefabInstance:
     - target: {fileID: 1341030792403012308, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
       propertyPath: speed
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1341030792403012308, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
       propertyPath: minSpeed
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1341030792403012309, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}
@@ -4912,6 +4912,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1341030792403012309, guid: 344f4b72b5d6eaf48bb387817cb3e869,
+        type: 3}
+      propertyPath: m_Mass
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1341030792692062619, guid: 344f4b72b5d6eaf48bb387817cb3e869,
         type: 3}

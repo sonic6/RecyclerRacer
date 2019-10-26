@@ -5,14 +5,14 @@ public class PickUps : MonoBehaviour
 {
     GameObject[] carts;
     GameObject myCompatibleCart;
-    float aiBoost = 10; //speed boost to be given to ai cart
-    float playerBoost = 10; //speed boost to be given to player cart
+    float aiBoost = 3; //speed boost to be given to ai cart
+    float playerBoost = 3; //speed boost to be given to player cart
     
     [Tooltip("The amount the ray length will be multiplied by when casting it. This will help make a longer ray that goes through the pickup object")]
     public static float rayMulti = 2;
 
     [Tooltip("How long in seconds this pickUp will stay on the game field before dissapearing")]
-    [SerializeField] float lifeSpan = 15;
+    [SerializeField] float lifeSpan = 40;
 
     private void Start()
     {
@@ -46,9 +46,9 @@ public class PickUps : MonoBehaviour
 
             if (other.gameObject == myCompatibleCart) //If the correct cart takes the pickup increase the cart's speed by playerBoost or aiBoost accordingly
             {
-                if (other.GetComponent<AiCart>())
+                if (other.GetComponent<AiCart>() && other.GetComponent<AiCart>().speed < 15)
                     other.GetComponent<AiCart>().speed += aiBoost;
-                else if (other.GetComponent<CartController>())
+                else if (other.GetComponent<CartController>() && other.GetComponent<CartController>().speed < 15)
                     other.GetComponent<CartController>().speed += playerBoost;
             }
             else if (other.gameObject != myCompatibleCart) //If the wrong cart takes the pickup decrease the cart's speed by playerBoost or aiBoost accordingly

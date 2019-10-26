@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CartController : MonoBehaviour
 {
+
+
     WheelCollider[] myRig; //WheelCollider components on racing cart
 
     [Tooltip("The position of the camera relative to the player's cart")]
@@ -23,7 +25,10 @@ public class CartController : MonoBehaviour
     float distanceFromGround = 1;
 
     Rigidbody rb;
-
+    private void Awake()
+    {
+        Time.timeScale = 2.5f;
+    }
 
     void Start()
     {
@@ -122,17 +127,30 @@ public class CartController : MonoBehaviour
 
             if (Input.GetAxis("Horizontal") > 0)
             {
-                float newSteer = Mathf.LerpAngle(0, 75f, 1f/cartVelocity.magnitude) * Input.GetAxis("Horizontal");
+                float newSteer = Mathf.LerpAngle(0, 75f, 1f /cartVelocity.magnitude ) * Input.GetAxis("Horizontal") ;
                 wheel1.steerAngle = newSteer;
                 wheel2.steerAngle = newSteer;
             }
 
             else if (Input.GetAxis("Horizontal") < 0)
             {
-                float newSteer = Mathf.LerpAngle(0, 75f, 1f / cartVelocity.magnitude) * Input.GetAxis("Horizontal");
+                float newSteer = Mathf.LerpAngle(0, 75f,1f / cartVelocity.magnitude)* Input.GetAxis("Horizontal") ;
                 wheel1.steerAngle = newSteer;
                 wheel2.steerAngle = newSteer;
             }
+
+            else if (Input.GetAxis("Horizontal") == 0)
+            {
+                wheel1.steerAngle = 0;
+                wheel2.steerAngle = 0;
+            }
+
+            //This is for drifting
+            //if (Input.GetKey(KeyCode.Space))
+            //{
+            //    rb.transform.localEulerAngles = new Vector3(rb.transform.localEulerAngles.x, Mathf.LerpAngle(0, 90f,Time.deltaTime * Input.GetAxis("Horizontal")), rb.transform.localEulerAngles.z);
+            //    //rb.MoveRotation(new Quaternion(rb.transform.localEulerAngles.x, Mathf.LerpAngle(0, 90f, Input.GetAxis("Horizontal") / 360), rb.transform.localEulerAngles.z, rb.transform.localRotation.w));
+            //}
         }
     }
 
@@ -140,6 +158,6 @@ public class CartController : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         if(speed > minSpeed)
-            speed = speed - 10;
+            speed = speed - 3;
     }
 }
