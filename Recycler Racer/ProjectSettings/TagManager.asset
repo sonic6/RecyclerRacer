@@ -10,6 +10,7 @@ TagManager:
   - paper
   - glass
   - compost
+  - wall
   layers:
   - Default
   - TransparentFX

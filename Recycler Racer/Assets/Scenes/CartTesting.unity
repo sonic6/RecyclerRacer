@@ -171,6 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleDetection: 10
   obstacleDetectSides: 3
+  trackPositions: []
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 2062911608}
   speed: 3
@@ -2248,7 +2249,7 @@ GameObject:
   - component: {fileID: 820726582}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3074,6 +3075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleDetection: 10
   obstacleDetectSides: 3
+  trackPositions: []
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 2062911608}
   speed: 3
@@ -3190,6 +3192,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleDetection: 5
   obstacleDetectSides: 3
+  trackPositions: []
   previousDestination: {fileID: 0}
   currentDestination: {fileID: 1340817331}
   speed: 3
@@ -3656,7 +3659,7 @@ GameObject:
   - component: {fileID: 1740285447}
   m_Layer: 0
   m_Name: Cylinder (1)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
