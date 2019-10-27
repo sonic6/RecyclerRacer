@@ -29,7 +29,7 @@ public class PickUps : MonoBehaviour
             var cartX = cart.transform.position.x;
             var cartZ = cart.transform.position.z;
 
-            if (cart.gameObject.name.Contains(gameObject.tag)/* && Mathf.Abs(cartX - transform.position.x) < 10 && Mathf.Abs(cartZ - transform.position.z) < 10*/) //if the cart is compatible with this pickup
+            if (cart.gameObject.name.Contains(gameObject.tag)) //if the cart is compatible with this pickup
             {
                 myCompatibleCart = cart;
             }
@@ -40,7 +40,7 @@ public class PickUps : MonoBehaviour
     {
         if (other.tag.Contains("cart"))
         {
-            if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
+            if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().currentDestination == gameObject.transform && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
                 myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
             
 
@@ -65,30 +65,12 @@ public class PickUps : MonoBehaviour
         }
         
     }
-
-    //private void IsPickUpBehindCart() //casts a ray from the center point of world coordinates to this pickup item and through it. If cart hits the ray while driving, then it moves on and doesn't try to take the pickup
-    //{
-    //    Vector3 distance = new Vector3(0, 0, 0);
-    //    Ray ray = new Ray(distance, rayMulti * (transform.position));
-    //    RaycastHit hit;
-    //    Debug.DrawRay(distance, rayMulti * (transform.position));
-    //    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == myCompatibleCart)
-    //    {
-    //        if (myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().currentDestination == gameObject && myCompatibleCart.GetComponent<AiCart>().previousDestination != null)
-    //            myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
-    //    }
-            
-    //}
-
-    private void Update()
-    {
-        //IsPickUpBehindCart();
-    }
+    
 
     IEnumerator DestroyAfterTime()
     {
         yield return new WaitForSeconds(lifeSpan);
-        if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().previousDestination != null && myCompatibleCart.GetComponent<AiCart>().currentDestination == gameObject)
+        if(myCompatibleCart.GetComponent<AiCart>() && myCompatibleCart.GetComponent<AiCart>().previousDestination != null && myCompatibleCart.GetComponent<AiCart>().currentDestination == gameObject.transform)
             myCompatibleCart.GetComponent<AiCart>().PrevDestinationOnPickUp();
         Destroy(gameObject);
     }

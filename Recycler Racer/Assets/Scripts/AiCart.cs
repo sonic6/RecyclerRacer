@@ -135,7 +135,8 @@ public class AiCart : MonoBehaviour
 
     public void PrevDestinationOnPickUp()
     {
-        currentDestination = previousDestination;
+        if(previousDestination != null)
+            currentDestination = previousDestination;
     }
 
     void ApplyWheelSpeed(float wheelSpeed)
@@ -239,11 +240,15 @@ public class Detector : MonoBehaviour
             currentDest = transform.parent.GetComponent<AiCart>().currentDestination;
             string crtDstName = transform.parent.GetComponent<AiCart>().currentDestination.name;
 
+            //These three lines are to seperate the name of the gameobject element (the ones in the race track) into string and number to later parse the number into an Int
             String[] spearator = { "GameObject (", ")" };
             Int32 count = 2;
             String[] strlist = crtDstName.Split(spearator, count, StringSplitOptions.RemoveEmptyEntries);
             
-            nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[int.Parse(strlist[0]) + 1];
+            if(int.Parse(strlist[0]) < transform.parent.GetComponent<AiCart>().trackPositions.Length - 1)
+                nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[int.Parse(strlist[0]) + 1];
+            else
+                nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[1];
 
             float currentAndNxtX = Mathf.Abs(nxtDest.transform.position.x - currentDest.transform.position.x);
             float currentAndPickupX = Mathf.Abs(myPickup.transform.position.x - currentDest.transform.position.x);
