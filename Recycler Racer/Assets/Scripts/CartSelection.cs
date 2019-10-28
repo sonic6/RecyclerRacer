@@ -1,22 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using TMPro;
 
 public class CartSelection : MonoBehaviour
 {
     [SerializeField] GameObject[] Carts;
     private GameObject currentCart;
-    private Transform previewPos;
+    public Transform previewPos;
     int currentIndex = 0;
+    public Transform emptyPosition;
+    public TextMeshProUGUI cartName;
 
     private void Start()
     {
         currentCart = Carts[currentIndex];
-        previewPos = currentCart.transform;
+        cartName.text = currentCart.name;
     }
 
     public void RightButton()
     {
+        HideCart();
+
         currentIndex++;
         if (currentIndex < Carts.Length)
             currentCart = Carts[currentIndex];
@@ -25,10 +28,13 @@ public class CartSelection : MonoBehaviour
             currentIndex = 0;
             currentCart = Carts[currentIndex];
         }
+        PreviewCart();
     }
 
     public void LeftButton()
     {
+        HideCart();
+
         currentIndex--;
         if (currentIndex >= 0)
             currentCart = Carts[currentIndex];
@@ -37,11 +43,17 @@ public class CartSelection : MonoBehaviour
             currentIndex = Carts.Length - 1;
             currentCart = Carts[currentIndex];
         }
+        PreviewCart();
     }
 
-    //This function is unfinished. Will be continued
+    private void HideCart()
+    {
+        currentCart.transform.position = emptyPosition.position;
+    }
+    
     private void PreviewCart()
     {
         currentCart.transform.position = previewPos.position;
+        cartName.text = currentCart.name;
     }
 }
