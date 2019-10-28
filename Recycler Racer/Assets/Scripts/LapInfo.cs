@@ -12,7 +12,7 @@ public class LapInfo : MonoBehaviour
     void Start()
     {
         myList = FindObjectOfType<RankList>();
-        goal = RankList.goalLine;
+        goal = FindObjectOfType<RankList>().gameObject;
     }
 
     private void OnTriggerEnter(Collider other)
