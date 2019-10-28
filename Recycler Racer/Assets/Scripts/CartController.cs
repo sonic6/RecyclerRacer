@@ -7,14 +7,14 @@ public class CartController : MonoBehaviour
 
     WheelCollider[] myRig; //WheelCollider components on racing cart
 
-    [Tooltip("The position of the camera relative to the player's cart")]
-    [SerializeField] Vector3 camPos;
+    //[Tooltip("The position of the camera relative to the player's cart")]
+    //[SerializeField] Vector3 camPos;
     [Tooltip("racing cart's speed")]
     public float speed;
     [Tooltip("racing cart's minimum speed")]
     public float minSpeed;
-    [Tooltip("racing cart's steering left and right speed")]
-    [SerializeField] float steer;
+    //[Tooltip("racing cart's steering left and right speed")]
+    //[SerializeField] float steer;
 
     public GameObject camPivot;
     

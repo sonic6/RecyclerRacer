@@ -13,7 +13,7 @@ public class CartSelection : MonoBehaviour
     private void Start()
     {
         currentCart = Carts[currentIndex];
-        cartName.text = currentCart.name;
+        PreviewCart();
     }
 
     public void RightButton()
@@ -54,6 +54,7 @@ public class CartSelection : MonoBehaviour
     private void PreviewCart()
     {
         currentCart.transform.position = previewPos.position;
-        cartName.text = currentCart.name;
+        cartName.text = currentCart.name.Remove(0, 8);
+        PlayerPrefs.SetString("chosenCart", cartName.text);
     }
 }
