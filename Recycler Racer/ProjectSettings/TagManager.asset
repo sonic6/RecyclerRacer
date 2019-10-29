@@ -11,6 +11,10 @@ TagManager:
   - glass
   - compost
   - wall
+  - Checkpoint
+  - Cart1
+  - Needle
+  - FinishLine
   layers:
   - Default
   - TransparentFX
