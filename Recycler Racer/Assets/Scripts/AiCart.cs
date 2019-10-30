@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class AiCart : MonoBehaviour
 {
@@ -7,8 +8,8 @@ public class AiCart : MonoBehaviour
     public float obstacleDetectSides = 3;
 
     private TrackTargets targets;
-    private Transform[] trackPositions;
-    private int trackPosNr = 0;
+    public Transform[] trackPositions;
+    private int trackPosNr = 1;
     
     public Transform previousDestination;
     public Transform currentDestination;
@@ -46,9 +47,11 @@ public class AiCart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FlipCart();
         ObstacleDetection();
         IsCartOnGround();
         NextPosition();
+        
         //ForgetPickUpIfFar(currentDestination);
     }
 
@@ -89,15 +92,30 @@ public class AiCart : MonoBehaviour
 
     }
 
+    void FlipCart()
+    {
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+        {
+            StartCoroutine(CheckRotation());
+        }
+    }
+
+    IEnumerator CheckRotation()
+    {
+        yield return new WaitForSeconds(5);
+        if (transform.eulerAngles.x >= 90 || transform.eulerAngles.z >= 90)
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+    }
+
     private void NextPosition()
     {
         Vector3 me = gameObject.transform.position;
         Vector3 they = currentDestination.transform.position;
         //If current destination is close and isn't a pickup
-        if (Mathf.Abs(me.x - they.x) < 10f && Mathf.Abs(me.z - they.z) < 10f && currentDestination.name.Contains("pickup") == false)
+        if (Mathf.Abs(me.x - they.x) < 20f && Mathf.Abs(me.z - they.z) < 20f && currentDestination.name.Contains("pickup") == false)
         {
             trackPosNr++;
-            if (trackPosNr > trackPositions.Length)
+            if (trackPosNr > trackPositions.Length - 1)
                 trackPosNr = 1;
             currentDestination = trackPositions[trackPosNr];
         }
@@ -108,17 +126,17 @@ public class AiCart : MonoBehaviour
             if(Mathf.Abs(me.x - they.x) < 20f && Mathf.Abs(me.z - they.z) < 20f)
             {
                 trackPosNr++;
-                if (trackPosNr > trackPositions.Length)
+                if (trackPosNr > trackPositions.Length - 1)
                     trackPosNr = 1;
                 previousDestination = trackPositions[trackPosNr];
             }
-            //ForgetPickUpIfFar(currentDestination);
         }
     }
 
     public void PrevDestinationOnPickUp()
     {
-        currentDestination = previousDestination;
+        if(previousDestination != null)
+            currentDestination = previousDestination;
     }
 
     void ApplyWheelSpeed(float wheelSpeed)
@@ -128,59 +146,56 @@ public class AiCart : MonoBehaviour
             wheel.motorTorque = wheelSpeed;
         }
     }
-
-    public bool RayDistance(RaycastHit hit, float length)
-    {
-        float myX = Mathf.Abs(transform.position.x - hit.point.x);
-        float myZ = Mathf.Abs(transform.position.z - hit.point.z);
-        if (myX <= length && myZ <= length)
-            return true;
-        else return false;
-
-    }
+    
 
     private void ObstacleDetection()
     {
-        Ray ray = new Ray(gameObject.transform.localPosition, (transform.forward * obstacleDetection)/Mathf.Infinity);
+        Ray ray = new Ray(gameObject.transform.localPosition, (transform.forward / obstacleDetection));
         RaycastHit hit;
         Debug.DrawRay(gameObject.transform.localPosition, transform.forward * obstacleDetection, Color.green);
 
-        Ray ray1 = new Ray(gameObject.transform.localPosition, (new Vector3(0,0,obstacleDetectSides) + transform.forward * obstacleDetection) / Mathf.Infinity);
+        Ray ray1 = new Ray(gameObject.transform.localPosition, (new Vector3(0,0,obstacleDetectSides) + transform.forward / obstacleDetection));
         RaycastHit hit1;
         Debug.DrawRay(gameObject.transform.localPosition, new Vector3(0, 0, obstacleDetectSides) + transform.forward * obstacleDetection, Color.green);
 
-        Ray ray2 = new Ray(gameObject.transform.localPosition, (new Vector3(0, 0, -obstacleDetectSides) + transform.forward * obstacleDetection) / Mathf.Infinity);
+        Ray ray2 = new Ray(gameObject.transform.localPosition, (new Vector3(0, 0, -obstacleDetectSides) + transform.forward / obstacleDetection));
         RaycastHit hit2;
         Debug.DrawRay(gameObject.transform.localPosition, new Vector3(0, 0, -obstacleDetectSides) + transform.forward * obstacleDetection, Color.green);
-        if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag != "floor" /*&& RayDistance(hit, obstacleDetection) == true*/)
+        if (Physics.Raycast(ray, out hit) && ObstacleDistance(hit, obstacleDetection) == true && hit.collider.gameObject.tag != "floor")
         {
-            print("i see " + hit.collider.name);
 
-            ApplyWheelSpeed(-speed);
+            if (hit.collider.gameObject.tag == "wall")
+            {
+                Vector3 relativeVector = transform.InverseTransformPoint(currentDestination.position);
+                float newSteer = (relativeVector.x / relativeVector.magnitude) * -75f;
+                wheel1.steerAngle = newSteer;
+                wheel2.steerAngle = newSteer;
+                ApplyWheelSpeed(-speed * 4);
+            }
+            else
+            {
+                ApplyWheelSpeed(speed / 2);
+            }
         }
 
-        else if (Physics.Raycast(ray1, out hit1) && hit1.collider.gameObject.tag != "floor" /*&& RayDistance(hit1, obstacleDetection) == true*/)
+        else if (Physics.Raycast(ray1, out hit1) && ObstacleDistance(hit1, obstacleDetection) == true && hit1.collider.gameObject.tag != "floor")
         {
-            print("i see " + hit1.collider.name);
-
-            ApplyWheelSpeed(-speed);
+           
             Vector3 relativeVector = transform.InverseTransformPoint(hit1.transform.position);
             float newSteer = (relativeVector.x / relativeVector.magnitude) * -75f;
             wheel1.steerAngle = newSteer;
             wheel2.steerAngle = newSteer;
-            //ApplyWheelSpeed(speed / 2);
+            ApplyWheelSpeed(speed / 2);
         }
 
-        else if (Physics.Raycast(ray2, out hit2) && hit2.collider.gameObject.tag != "floor" /*&& RayDistance(hit2, obstacleDetection) == true*/)
+        else if (Physics.Raycast(ray2, out hit2) && ObstacleDistance(hit2, obstacleDetection) == true && hit2.collider.gameObject.tag != "floor")
         {
-            print("i see " + hit2.collider.name);
-
-            ApplyWheelSpeed(-speed);
+            
             Vector3 relativeVector = transform.InverseTransformPoint(hit2.transform.position);
             float newSteer = (relativeVector.x / relativeVector.magnitude) * 75f;
             wheel1.steerAngle = newSteer;
             wheel2.steerAngle = newSteer;
-            //ApplyWheelSpeed(speed / 2);
+            ApplyWheelSpeed(speed / 2);
         }
         else Movement();
 
@@ -188,19 +203,15 @@ public class AiCart : MonoBehaviour
 
     }
 
-    //private void ForgetPickUpIfFar(Transform pickup)
-    //{
-    //    if (pickup.GetComponent<PickUps>())
-    //    {
-    //        Vector3 me = transform.position;
-    //        Vector3 they = pickup.transform.position;
-
-    //        if (Mathf.Abs(me.x - they.x) > 30f && Mathf.Abs(me.z - they.z) > 30f)
-    //        {
-    //            currentDestination = previousDestination;
-    //        }
-    //    }
-    //}
+    private bool ObstacleDistance(RaycastHit hit, float distance)
+    {
+        float myX = Mathf.Abs(hit.point.x - transform.position.x);
+        float myZ = Mathf.Abs(hit.point.z - transform.position.z);
+        if (myX <= distance && myZ <= distance)
+            return true;
+        else return false;
+    }
+    
 
 }
 
@@ -219,11 +230,62 @@ public class Detector : MonoBehaviour
         bx.size = new Vector3(80, 20, 5);
     }
 
+    private bool IsPickUpOnTrack(GameObject myPickup) //This function checks if the detected pickup is on track between current destination point and next destination point
+    {
+        Transform currentDest;
+        Transform nxtDest;
+
+        if (transform.parent.GetComponent<AiCart>().currentDestination.name.Contains("pickup") == false)
+        {
+            currentDest = transform.parent.GetComponent<AiCart>().currentDestination;
+            string crtDstName = transform.parent.GetComponent<AiCart>().currentDestination.name;
+
+            //These three lines are to seperate the name of the gameobject element (the ones in the race track) into string and number to later parse the number into an Int
+            String[] spearator = { "GameObject (", ")" };
+            Int32 count = 2;
+            String[] strlist = crtDstName.Split(spearator, count, StringSplitOptions.RemoveEmptyEntries);
+            
+            if(int.Parse(strlist[0]) < transform.parent.GetComponent<AiCart>().trackPositions.Length - 1)
+                nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[int.Parse(strlist[0]) + 1];
+            else
+                nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[1];
+
+            float currentAndNxtX = Mathf.Abs(nxtDest.transform.position.x - currentDest.transform.position.x);
+            float currentAndPickupX = Mathf.Abs(myPickup.transform.position.x - currentDest.transform.position.x);
+
+            float currentAndNxtZ = Mathf.Abs(nxtDest.transform.position.z - currentDest.transform.position.z);
+            float currentAndPickupZ = Mathf.Abs(myPickup.transform.position.z - currentDest.transform.position.z);
+            if ((currentAndPickupX < currentAndNxtX) && (currentAndPickupZ < currentAndNxtZ))
+                return true;
+            else return false;
+        }
+
+        else
+        {
+            currentDest = transform.parent.GetComponent<AiCart>().previousDestination;
+            string crtDstName = transform.parent.GetComponent<AiCart>().previousDestination.name;
+            String[] spearator = { "GameObject (", ")" };
+            Int32 count = 2;
+            String[] strlist = crtDstName.Split(spearator, count, StringSplitOptions.RemoveEmptyEntries);
+
+            nxtDest = transform.parent.GetComponent<AiCart>().trackPositions[int.Parse(strlist[0]) + 1];
+
+            float currentAndNxtX = Mathf.Abs(nxtDest.transform.position.x - currentDest.transform.position.x);
+            float currentAndPickupX = Mathf.Abs(myPickup.transform.position.x - currentDest.transform.position.x);
+
+            float currentAndNxtZ = Mathf.Abs(nxtDest.transform.position.z - currentDest.transform.position.z);
+            float currentAndPickupZ = Mathf.Abs(myPickup.transform.position.z - currentDest.transform.position.z);
+            if ((currentAndPickupX < currentAndNxtX) && (currentAndPickupZ < currentAndNxtZ))
+                return true;
+            else return false;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (transform.parent.name.Contains(other.tag))
+        if (transform.parent.GetComponent<AiCart>().speed < 15 && transform.parent.name.Contains(other.tag))
         {
-            if(other.gameObject.name != transform.parent.GetComponent<AiCart>().currentDestination.name)
+            if((other.gameObject.name != transform.parent.GetComponent<AiCart>().currentDestination.name) && IsPickUpOnTrack(other.gameObject) == true)
             {
                 transform.parent.GetComponent<AiCart>().previousDestination = transform.parent.GetComponent<AiCart>().currentDestination;
                 transform.parent.GetComponent<AiCart>().currentDestination = other.transform;
