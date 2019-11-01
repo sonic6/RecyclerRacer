@@ -49,20 +49,41 @@ public class TrackTargets : MonoBehaviour
         
         foreach(Transform target in targets)
         {
-            Vector3 rayStart = new Vector3(trackCenter.position.x, target.position.y, trackCenter.position.z);
-            Vector3 rayFinish = new Vector3(target.position.x, target.localPosition.y, target.position.z);
-            Ray ray = new Ray(rayStart, rayFinish);
-            RaycastHit hit;
-            Debug.DrawRay(rayStart, rayFinish, Color.green);
-
-            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer == 8 /*Layer nr 8 is the player layer*/ && targets[nxtInt] == target.transform)
+            for(int i = 0; i<10; i++)
             {
-                if (nxtInt < targets.Length - 1)
-                    nxtInt++;
-                else
-                    nxtInt = 1;
-                nxtTarget = targets[nxtInt];
+                Vector3 rayStart = new Vector3(trackCenter.position.x, target.position.y + i/10, trackCenter.position.z);
+                Vector3 rayFinish = new Vector3(target.position.x - rayStart.x, target.localPosition.y + i/10, target.position.z - rayStart.z); 
+
+                Ray ray = new Ray(rayStart, rayFinish);
+                RaycastHit hit;
+                Debug.DrawRay(rayStart, rayFinish, Color.green);
+
+
+                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer == 8 /*Layer nr 8 is the player layer*/ && targets[nxtInt] == target.transform)
+                {
+
+                    var cartControl = new int();
+                    if (hit.collider.GetComponent<AiCart>() == true)
+                        cartControl = hit.collider.GetComponent<AiCart>().nxtInt;
+                    else if (hit.collider.GetComponent<CartController>() == true)
+                        cartControl = hit.collider.GetComponent<CartController>().nxtInt;
+
+                    if (cartControl < targets.Length - 1)
+                    {
+                        hit.collider.GetComponent<AiCart>().nxtInt++;
+                        hit.collider.GetComponent<CartController>().nxtInt++;
+                    }
+                    else
+                    {
+                        hit.collider.GetComponent<AiCart>().nxtInt = 1;
+                        hit.collider.GetComponent<CartController>().nxtInt = 1;
+                    }
+                    nxtTarget = targets[nxtInt];
+                    print(target.name);
+                }
             }
+
+            
         }
         
     }

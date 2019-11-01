@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CartController : MonoBehaviour
 {
-
+    public int nxtInt; //used by TrackTsargets script
 
     WheelCollider[] myRig; //WheelCollider components on racing cart
 
@@ -32,6 +32,8 @@ public class CartController : MonoBehaviour
 
     void Start()
     {
+        nxtInt = 1;
+
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass.Set(rb.centerOfMass.x, rb.centerOfMass.y - 0.5f, rb.centerOfMass.z); //Lowering the center of mass is supposed to make the cart more stable
         myRig = GetComponentsInChildren<WheelCollider>();

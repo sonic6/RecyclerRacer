@@ -4,6 +4,8 @@ using System;
 
 public class AiCart : MonoBehaviour
 {
+    public int nxtInt; //used by TrackTsargets script
+
     public float obstacleDetection = 20;
     public float obstacleDetectSides = 3;
 
@@ -25,6 +27,7 @@ public class AiCart : MonoBehaviour
 
     private void Start()
     {
+        nxtInt = 1;
         GameObject detector = Instantiate(new GameObject());
         detector.transform.position = transform.position;
         detector.transform.rotation = transform.rotation;
