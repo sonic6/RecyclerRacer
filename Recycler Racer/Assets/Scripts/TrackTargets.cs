@@ -44,52 +44,56 @@ public class TrackTargets : MonoBehaviour
         }
     }
 
-    public void RayThroughTargets()
-    {
+    //public void RayThroughTargets()
+    //{
         
-        foreach(Transform target in targets)
-        {
-            for(int i = 0; i<10; i++)
-            {
-                Vector3 rayStart = new Vector3(trackCenter.position.x, target.position.y + i/10, trackCenter.position.z);
-                Vector3 rayFinish = new Vector3(target.position.x - rayStart.x, target.localPosition.y + i/10, target.position.z - rayStart.z); 
+    //    foreach(Transform target in targets)
+    //    {
+    //        for(int i = 0; i<10; i++)
+    //        {
+    //            Vector3 rayStart = new Vector3(trackCenter.position.x, target.position.y + i/10, trackCenter.position.z);
+    //            Vector3 rayFinish = new Vector3(target.position.x - rayStart.x, target.localPosition.y + i/10, target.position.z - rayStart.z); 
 
-                Ray ray = new Ray(rayStart, rayFinish);
-                RaycastHit hit;
-                Debug.DrawRay(rayStart, rayFinish, Color.green);
+    //            Ray ray = new Ray(rayStart, rayFinish);
+    //            RaycastHit hit;
+    //            Debug.DrawRay(rayStart, rayFinish, Color.green);
 
 
-                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer == 8 /*Layer nr 8 is the player layer*/ && targets[nxtInt] == target.transform)
-                {
+    //            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.layer == 8 /*Layer nr 8 is the player layer*/ && targets[nxtInt] == target.transform)
+    //            {
 
-                    var cartControl = new int();
-                    if (hit.collider.GetComponent<AiCart>() == true)
-                        cartControl = hit.collider.GetComponent<AiCart>().nxtInt;
-                    else if (hit.collider.GetComponent<CartController>() == true)
-                        cartControl = hit.collider.GetComponent<CartController>().nxtInt;
+    //                var cartControl = new int();
+    //                if (hit.collider.GetComponent<AiCart>() == true)
+    //                    cartControl = hit.collider.GetComponent<AiCart>().nxtInt;
+    //                else if (hit.collider.GetComponent<CartController>() == true)
+    //                    cartControl = hit.collider.GetComponent<CartController>().nxtInt;
 
-                    if (cartControl < targets.Length - 1)
-                    {
-                        hit.collider.GetComponent<AiCart>().nxtInt++;
-                        hit.collider.GetComponent<CartController>().nxtInt++;
-                    }
-                    else
-                    {
-                        hit.collider.GetComponent<AiCart>().nxtInt = 1;
-                        hit.collider.GetComponent<CartController>().nxtInt = 1;
-                    }
-                    nxtTarget = targets[nxtInt];
-                    print(target.name);
-                }
-            }
+    //                if (cartControl < targets.Length - 1)
+    //                {
+    //                    if(hit.collider.GetComponent<AiCart>() != null)
+    //                        hit.collider.GetComponent<AiCart>().nxtInt++;
+    //                    if(hit.collider.GetComponent<CartController>() != null)
+    //                        hit.collider.GetComponent<CartController>().nxtInt++;
+    //                }
+    //                else
+    //                {
+    //                    if (hit.collider.GetComponent<AiCart>() != null)
+    //                        hit.collider.GetComponent<AiCart>().nxtInt = 1;
+    //                    if (hit.collider.GetComponent<CartController>() != null)
+    //                        hit.collider.GetComponent<CartController>().nxtInt = 1;
+    //                }
+    //                nxtTarget = targets[nxtInt];
+    //                print(target.name);
+    //            }
+    //        }
 
             
-        }
+    //    }
         
-    }
+    //}
 
     private void Update()
     {
-        RayThroughTargets();
+        //RayThroughTargets();
     }
 }
