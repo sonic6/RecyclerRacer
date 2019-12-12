@@ -309,7 +309,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb7fb860d66545b49b84701e36406355, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Kartscene 02
 --- !u!1 &566834752
 GameObject:
   m_ObjectHideFlags: 0
