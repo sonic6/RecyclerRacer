@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PickUps : MonoBehaviour
 {
+    PickUpCounter Ui;
+
     GameObject[] carts;
     GameObject myCompatibleCart;
     float aiBoost = 3; //speed boost to be given to ai cart
@@ -13,6 +15,11 @@ public class PickUps : MonoBehaviour
 
     [Tooltip("How long in seconds this pickUp will stay on the game field before dissapearing")]
     [SerializeField] float lifeSpan = 40;
+
+    private void Awake()
+    {
+        Ui = FindObjectOfType<PickUpCounter>();
+    }
 
     private void Start()
     {
@@ -50,6 +57,9 @@ public class PickUps : MonoBehaviour
                     other.GetComponent<AiCart>().speed += aiBoost;
                 else if (other.GetComponent<CartController>() && other.GetComponent<CartController>().speed < 15)
                     other.GetComponent<CartController>().speed += playerBoost;
+
+                if(other.GetComponent<CartController>()) //This communicates with PickUpCounter script to tell it what type of pickup was picked up by player
+                    Ui.UpdateUi();
             }
             else if (other.gameObject != myCompatibleCart) //If the wrong cart takes the pickup decrease the cart's speed by playerBoost or aiBoost accordingly
             {

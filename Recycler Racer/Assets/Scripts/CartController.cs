@@ -28,6 +28,8 @@ public class CartController : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 2.5f;
+
+        PickUpCounter.pickUpType = gameObject.name;
     }
 
     void Start()
