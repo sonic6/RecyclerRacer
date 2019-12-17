@@ -27,11 +27,17 @@ public class EscapeMenu : MonoBehaviour
 
     public void MainMenu(int sceneNumber)
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(sceneNumber);
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void ResultsScene(string name)
+    {
+        SceneManager.LoadScene(name);
     }
 }

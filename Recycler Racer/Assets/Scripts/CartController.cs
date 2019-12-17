@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CartController : MonoBehaviour
 {
+    PickUpCounter pc;
     public int nxtInt; //used by TrackTsargets script
 
     WheelCollider[] myRig; //WheelCollider components on racing cart
@@ -28,12 +29,13 @@ public class CartController : MonoBehaviour
     private void Awake()
     {
         Time.timeScale = 2.5f;
-
-        PickUpCounter.pickUpType = gameObject.name;
+        pc = FindObjectOfType<PickUpCounter>();
+        pc.pickUpType = gameObject.name;
     }
 
     void Start()
     {
+        
         nxtInt = 1;
 
         rb = GetComponent<Rigidbody>();
@@ -136,12 +138,13 @@ public class CartController : MonoBehaviour
         if (cartVelocity.x != 0 || cartVelocity.z != 0)
             isDriving = true;
         else isDriving = false;
-        
+
+        rb.AddRelativeForce(-transform.up * Time.deltaTime * (cartVelocity.magnitude / 10)); //Adds downwards force on the car to pin it to th ground. 
 
         //If the cart is driving (velocity doesn't equal 0) then you can steer left and right
         if (isDriving == true)
         {
-            rb.AddRelativeForce(-transform.up * Time.deltaTime * (cartVelocity.magnitude/10)); //Adds downwards force on the car to pin it to th ground. 
+            
 
             if (Input.GetAxis("Horizontal") > 0)
             {

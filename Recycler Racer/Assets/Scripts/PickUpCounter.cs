@@ -1,32 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PickUpCounter : MonoBehaviour
 {
-    int pickedUp = 0;
+    public int pickedUp = 0;
 
-    public static string pickUpType;
+    public string pickUpType;
     [SerializeField] Image uiPickup = null;
-    Text PickupAmount;
+    [SerializeField] Text PickupAmount;
     [SerializeField] Sprite plastic;
     [SerializeField] Sprite glass;
     [SerializeField] Sprite compost;
     [SerializeField] Sprite paper;
+    [SerializeField] Text description;
 
     private void Start()
     {
         if (pickUpType.Contains("plastic"))
+        {
             uiPickup.sprite = plastic;
+            description.text = "plastic";
+        }
         else if (pickUpType.Contains("glass"))
+        {
             uiPickup.sprite = glass;
+            description.text = "glass";
+        }
         else if (pickUpType.Contains("compost"))
+        {
             uiPickup.sprite = compost;
+            description.text = "compost";
+        }
         else if (pickUpType.Contains("paper"))
+        {
             uiPickup.sprite = paper;
-
-        PickupAmount = uiPickup.GetComponentInChildren<Text>();
+            description.text = "metal";
+        }
     }
 
     public void UpdateUi()

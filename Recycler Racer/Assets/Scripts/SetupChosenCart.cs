@@ -8,6 +8,9 @@ public class SetupChosenCart : MonoBehaviour
     {
         string chosenCart = PlayerPrefs.GetString("chosenCart");
         carts = FindObjectsOfType<AiCart>();
+
+        if (chosenCart == "metal") chosenCart = "paper";
+
         foreach(AiCart cart in carts)
         {
             if(cart.gameObject.name.Contains(chosenCart))

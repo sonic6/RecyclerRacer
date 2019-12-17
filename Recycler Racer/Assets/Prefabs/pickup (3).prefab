@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303380714634536518}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 246.42284, y: 2.1497192, z: 127.88315}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: 246.42284, y: 2.0737, z: 127.82}
+  m_LocalScale: {x: 5.07175, y: 5.07175, z: 5.07175}
   m_Children:
   - {fileID: 4526324860713952700}
   - {fileID: 2542519767661095643}
@@ -133,7 +133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3388044892015548761}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19099732, y: 0.094999984, z: 0.23499756}
+  m_LocalPosition: {x: 0.043, y: 0.094999984, z: 0.235}
   m_LocalScale: {x: 0.0551234, y: 0.0551234, z: 0.0551234}
   m_Children: []
   m_Father: {fileID: 2542519767661095643}
@@ -197,6 +197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2542519767661095643}
+  - component: {fileID: 2156341121504730391}
   m_Layer: 10
   m_Name: sprites
   m_TagString: Untagged
@@ -220,6 +221,18 @@ Transform:
   m_Father: {fileID: 1303380714634536521}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2156341121504730391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4626685985449525825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 236c565ee4f6c9441b71a90d8ca52aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5542142913262460265
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3153626691500090695
 Transform:
   m_ObjectHideFlags: 0
@@ -387,6 +400,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 07bae69cb6ccf254aa73c901384a695b, type: 2}
+    - target: {fileID: -1504981713932161579, guid: ee284b8282d2de342b7f52f95ae83094,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee284b8282d2de342b7f52f95ae83094, type: 3}
 --- !u!4 &4526324860713952700 stripped

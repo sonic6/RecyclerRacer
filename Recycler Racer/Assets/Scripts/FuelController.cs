@@ -1,42 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FuelController : MonoBehaviour
 {
 
-    private GameObject needleTransform;
-    private const float maxSpeedAngle = -72;
-    private const float zeroSpeedAngle = 74;
+    [SerializeField] GameObject needleTransform;
+    [SerializeField] GameObject needle2;
+    private float maxSpeedAngle = -72;
+    private float zeroSpeedAngle = 72;
 
     private float speedMax;
     private float speed;
 
+    private static float updatableValue = 0;
 
-    private void Awake()
+    private void Start()
     {
-        needleTransform = GameObject.FindGameObjectWithTag("Needle");
-
-        speed = 100f;
-        speedMax = 100f;
+        needleTransform.transform.eulerAngles = new Vector3(0, 0, zeroSpeedAngle - 9);
     }
 
-    private float getSpeedRotation()
+    public void SetNeedleAngle(float value)
     {
-        float totalAngleSize = zeroSpeedAngle - maxSpeedAngle;
-
-        float speedNormalized = speed / speedMax;
-
-        return zeroSpeedAngle - speedNormalized * totalAngleSize;
+        updatableValue = ((maxSpeedAngle-zeroSpeedAngle) / value-1); //because the game starts of with 1 chunk of 3 in speed, not 0 chunk of 3;
+        needleTransform.transform.eulerAngles = new Vector3(0, 0, needleTransform.transform.eulerAngles.z + updatableValue);
     }
 
     private void Update()
     {
-        speed -= 20f * Time.deltaTime;
-
-        speed = Mathf.Clamp(speed, 0, speedMax);
-        //if (speed > speedMax) speed = speedMax;
-
-        needleTransform.transform.eulerAngles = new Vector3(0, 0, getSpeedRotation());
+        needle2.transform.eulerAngles = needleTransform.transform.eulerAngles * 2;
     }
+    
 }

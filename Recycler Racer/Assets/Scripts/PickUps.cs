@@ -4,6 +4,7 @@ using System.Collections;
 public class PickUps : MonoBehaviour
 {
     PickUpCounter Ui;
+    FuelController fc;
 
     GameObject[] carts;
     GameObject myCompatibleCart;
@@ -19,6 +20,7 @@ public class PickUps : MonoBehaviour
     private void Awake()
     {
         Ui = FindObjectOfType<PickUpCounter>();
+        fc = FindObjectOfType<FuelController>();
     }
 
     private void Start()
@@ -56,7 +58,10 @@ public class PickUps : MonoBehaviour
                 if (other.GetComponent<AiCart>() && other.GetComponent<AiCart>().speed < 15)
                     other.GetComponent<AiCart>().speed += aiBoost;
                 else if (other.GetComponent<CartController>() && other.GetComponent<CartController>().speed < 15)
+                {
                     other.GetComponent<CartController>().speed += playerBoost;
+                    fc.SetNeedleAngle(15/playerBoost);
+                }
 
                 if(other.GetComponent<CartController>()) //This communicates with PickUpCounter script to tell it what type of pickup was picked up by player
                     Ui.UpdateUi();
@@ -66,7 +71,10 @@ public class PickUps : MonoBehaviour
                 if (other.GetComponent<AiCart>() && other.GetComponent<AiCart>().speed > other.GetComponent<AiCart>().minSpeed)
                     other.GetComponent<AiCart>().speed -= aiBoost;
                 else if (other.GetComponent<CartController>() && other.GetComponent<CartController>().speed > other.GetComponent<CartController>().minSpeed)
+                {
                     other.GetComponent<CartController>().speed -= playerBoost;
+                    fc.SetNeedleAngle(-15 / playerBoost);
+                }
             }
             else
                 return;

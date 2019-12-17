@@ -153,7 +153,7 @@ public class AiCart : MonoBehaviour
 
     private void ObstacleDetection()
     {
-        Ray ray = new Ray(gameObject.transform.localPosition, (transform.forward / obstacleDetection));
+        Ray ray = new Ray(gameObject.transform.localPosition, (transform.forward * obstacleDetection));
         RaycastHit hit;
         Debug.DrawRay(gameObject.transform.localPosition, transform.forward * obstacleDetection, Color.green);
 
@@ -174,6 +174,15 @@ public class AiCart : MonoBehaviour
                 wheel1.steerAngle = newSteer;
                 wheel2.steerAngle = newSteer;
                 ApplyWheelSpeed(-speed * 4);
+                
+            }
+            else if(gameObject.name.Contains(hit.collider.gameObject.tag) == false)
+            {
+                Vector3 relativeVector = transform.InverseTransformPoint(currentDestination.position);
+                float newSteer = (relativeVector.x / relativeVector.magnitude) * -75f;
+                wheel1.steerAngle = newSteer;
+                wheel2.steerAngle = newSteer;
+                ApplyWheelSpeed(speed / 2);
             }
             else
             {
@@ -286,7 +295,7 @@ public class Detector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (transform.parent.GetComponent<AiCart>().speed < 15 && transform.parent.name.Contains(other.tag))
+        if (transform.parent.GetComponent<AiCart>().speed < 15 && transform.parent.name.Contains(other.tag) && other.tag != "cart")
         {
             if((other.gameObject.name != transform.parent.GetComponent<AiCart>().currentDestination.name) && IsPickUpOnTrack(other.gameObject) == true)
             {

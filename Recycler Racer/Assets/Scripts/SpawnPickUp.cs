@@ -17,7 +17,9 @@ public class SpawnPickUp : MonoBehaviour
     {
         
         GameObject nyObject = Instantiate(pickUps[Random.Range(0, pickUps.Length)], transform.position, transform.rotation);
-        nyObject.AddComponent<Rigidbody>();
+        Rigidbody rb = nyObject.AddComponent<Rigidbody>();
+        rb.constraints = RigidbodyConstraints.FreezeRotationX;
+        rb.constraints = RigidbodyConstraints.FreezeRotationZ;
         nyObject.AddComponent<OnTouchedFloor>();
         nyObject.GetComponent<BoxCollider>().isTrigger = false;
         nyObject.GetComponent<Rigidbody>().AddForce(transform.forward * Random.Range(throwForce * 0.75f, throwForce * 5f));

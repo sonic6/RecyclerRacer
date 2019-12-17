@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Kartscene 02.unity
     guid: 07ca35033b6e2e3428d35f2782009d11
+  - enabled: 1
+    path: Assets/Scenes/ResultsScene.unity
+    guid: c12977066e2c6994b8f1f414aeff14b1
   m_configObjects: {}

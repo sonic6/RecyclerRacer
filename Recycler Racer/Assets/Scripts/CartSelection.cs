@@ -55,6 +55,7 @@ public class CartSelection : MonoBehaviour
     {
         currentCart.transform.position = previewPos.position;
         cartName.text = currentCart.name.Remove(0, 8);
+        if (cartName.text == "paper") cartName.text = "metal";
         PlayerPrefs.SetString("chosenCart", cartName.text);
     }
 }
